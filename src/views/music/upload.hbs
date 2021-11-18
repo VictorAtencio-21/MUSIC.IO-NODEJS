@@ -1,0 +1,28 @@
+<div class="container p-4">
+        <div class="row">
+                <div class="col-md-4 offset-md-4">
+                        <div class="card">
+                                <div class="card-body">
+                                        <form action="/subircancion" method="POST" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                                <input type="text" name="nombre" placeholder="Nombre" class="form-control">
+                                                <input type="text" name="artista" placeholder="Artista" class="form-control">
+                                                <input type="text" name="genero" placeholder="Genero" class="form-control">  
+                                        </div>
+
+                                        <div class="input-group">
+                                                <input type="file" name="track" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                        </div><br>
+                                        
+                                        <div class="form-group">
+                                                <button type="submit" class="btn btn-success btn-block">
+                                                        Subir
+                                                </button>
+                                        </div>
+
+                                        </form>
+                                </div>
+                        </div>
+                </div>
+        </div>
+</div>
