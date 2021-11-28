@@ -1,5 +1,5 @@
-const {Schema, model} = require('mongoose');
-
+const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose')
 const SongSchema = new Schema({
     nombre :{
         type : String,
@@ -24,7 +24,7 @@ const SongSchema = new Schema({
     ruta: {
         type : String,
         required : true
-    }
+    },
 });
 
 module.exports = model('Songs', SongSchema);

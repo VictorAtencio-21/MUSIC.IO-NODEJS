@@ -16,7 +16,7 @@
                             <td>{{nombre}}</td>
                             <td>{{artista}}</td>
                             <td>{{genero}}</td>
-                            <td><a href="/play/:{{_id}}"><i class="fas fa-play-circle fa-2x"></i></a></td>
+                            <td><a href="/play/{{_id}}"><i class="fas fa-play-circle fa-2x"></i></a></td>
                             <td><form action="/eliminar/{{_id}}?_method=DELETE" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn btn-danger btn-block btn-sm">
@@ -32,6 +32,6 @@
  </div>
  <div class="">
          <audio id="audioPlayer" controls autoplay>
-             <source src="../../public/music/" type="audio/mp3">
+             <source src="/play/{{_id}}">
          </audio>
 </div>

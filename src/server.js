@@ -8,9 +8,11 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
 const path = require('path');
+const passport = require('passport');
 
 // Inicializaciones
 const app = express();
+require('./config/passport')
 
 // Ajustes
 app.set('port', process.env.PORT || 4000);
@@ -36,14 +38,23 @@ app.use(session({
     saveUninitialized: true
 }));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Var. globales
-
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    res.locals.user = req.user || null;
+    next();
+});
 
 // Rutas
 app.use(require('./routes/index.routes'));
-app.use(require('./routes/admin.routes'));
 app.use(require('./routes/music.routes'));
+app.use(require('./routes/users.routes'));
+
 
 
 // Archivos estaticos 

@@ -4,3 +4,9 @@
     right: 15%;
     width: 70%;
 }
+
+.navbar-brand {
+    transform: translateX(-50%);
+    left: 50%;
+    position: absolute;
+}

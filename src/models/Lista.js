@@ -1,14 +1,13 @@
-const {Schema, model} = require('mongoose');
+const mongoose = require('mongoose');
 
-const ListaSchema = new Schema({
+const ListaSchema = new mongoose.Schema({
     nombre_lista :{
         type : String,
         required : true
     },
-    owner :{
-        type : String,
-        required : true
-    },
+    owner :[{
+        type: mongoose.Schema.Types.ObjectId, ref:'Users'
+    }],
     canciones :[{
         type : mongoose.Schema.Types.ObjectId, ref:'Songs'
     }]
