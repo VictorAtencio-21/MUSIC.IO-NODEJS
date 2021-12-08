@@ -9,7 +9,7 @@ const OPTIONS = {
     useNewUrlParser: true,
     useUnifiedTopology: true
 };
-const CONECTOR = `mongodb+srv://${USER}:${PASSWORD}@clusterappnode.virbt.mongodb.net/${DATA_BASE}?retryWrites=true&w=majority`;
+const CONECTOR = `mongodb+srv://victor:passwordroot@clusterappnode.virbt.mongodb.net/${DATA_BASE}?retryWrites=true&w=majority`;
 
 mongoose.connect(CONECTOR, OPTIONS, MongoError => {
     if (MongoError) {
