@@ -1,12 +1,20 @@
-#audioPlayer{
-    position: fixed;
-    bottom: 50px;
-    right: 15%;
-    width: 70%;
-}
-
 .navbar-brand {
     transform: translateX(-50%);
     left: 50%;
     position: absolute;
+}
+
+hr{
+    border-top: none;
+    border: 1px solid lightgrey;
+}
+
+#searchResults{
+    max-width: 600px;
+    width: 95%;
+    margin: 20px auto 0 auto;
+}
+
+h3{
+    margin: 10px 0;
 }

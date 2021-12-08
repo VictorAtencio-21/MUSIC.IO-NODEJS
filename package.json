@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@handlebars/allow-prototype-access": "^1.0.5",
+    "accesscontrol": "^2.2.1",
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
     "cors": "^2.8.5",
@@ -19,12 +20,15 @@
     "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
     "fs-extra": "^10.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "lottie-web": "^5.8.1",
     "method-override": "^3.0.0",
     "mongoose": "^6.0.12",
     "morgan": "^1.10.0",
     "multer": "^1.4.3",
     "passport": "^0.5.0",
     "passport-local": "^1.0.0",
+    "timeago.js": "^4.0.0-beta.3",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

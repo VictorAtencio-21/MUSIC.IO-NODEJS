@@ -1,0 +1,40 @@
+<a href="/dash"><i class="fas fa-arrow-circle-left fa-2x"></i></a><br><br>
+<h1 class="text-center">Busca tus canciones preferidas</h1>
+
+<input type="text" style="display: block; margin: 40px auto 0 auto; padding: 10px 20px; max-width: 600px; width: 95%;" id="search" onkeyup="sendData(this)">
+<section id="searchResults">
+
+</section>
+
+<script>
+    function sendData(e){
+    const searchResults = document.getElementById("searchResults");
+    let match = e.value.match(/^[a-zA-Z ]*/);
+    let match2 = e.value.match(/\s*/);
+    if(match2[0] === e.value){
+        searchResults.innerHTML = '';
+        return;
+    }
+    if (match[0] === e.value){
+    fetch('find',{
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({payload: e.value})
+    }).then(res => res.json()).then(data => {
+        let payload = data.payload;
+        searchResults.innerHTML = '';
+        if (payload.length < 1) {
+            searchResults.innerHTML = '<p>Lo siento. No hay coincidencias</p>';
+            return;
+        }
+        payload.forEach((item, index) => {
+            if(index > 0) searchResults.innerHTML += '<hr>';
+            searchResults.innerHTML += `<h3>${item.nombre}</h3><a href="/play/{{_id}}"><i class="fas fa-play-circle fa-2x"></i></a>`
+        });
+        return;
+    });
+    return;
+    }
+    searchResults.innerHTML += '';
+}
+</script>

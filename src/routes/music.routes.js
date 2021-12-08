@@ -4,8 +4,10 @@ const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
 const {unlink} = require('fs-extra');
-
+const ObjectId = require('mongoose').Types.ObjectId;
 const Songs = require('../models/Songs');
+const Lista = require('../models/Lista');
+const User = require('../models/User');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -30,13 +32,17 @@ const { renderDashboard,
     renderMusicUpload
     } = require('../controllers/routes.controller');
 
-const {isAuthenticated} = require = require('../helpers/Validate')
+const {isAuthenticated} = require('../helpers/Validate')
+const {grantAccess} = require('../controllers/users.controller')
 
-//Dashboard del Admin
+//Dashboard
 router.get('/dash', isAuthenticated, renderDashboard);
 
+router.get('/admin', isAuthenticated, (req, res) => {
+    res.render('users/admin')
+});
 
-// Subir y eliminar canciones
+// Subir canciones
 router.get('/subir', isAuthenticated, renderMusicUpload);
 
 router.post('/subircancion', upload.single('track'), async (req, res) => {
@@ -52,21 +58,37 @@ router.post('/subircancion', upload.single('track'), async (req, res) => {
 
     await Cancion.save();
     req.flash('success_msg', 'Cancion Guardada.');
-    res.redirect('/play');
+    res.redirect('/manage-songs');
 });
 
-router.get('/play', isAuthenticated, async (req, res) => {
+//Obtener todas las canciones y buscar
+router.get('/songs', isAuthenticated, async (req, res) => {
     const songs = await Songs.find();
+    res.render('music/songs', {songs});
+});
 
-    res.render('music/player', {songs});
+router.get('/manage-songs', isAuthenticated, async (req, res) => {
+    const songs = await Songs.find();
+    res.render('music/songsadmin', {songs});
+});
+
+router.get('/find', isAuthenticated, async (req, res) => {
+    res.render('music/find');
+});
+
+router.post('/find', isAuthenticated, async (req, res) => {
+    let payload = req.body.payload.trim();
+    let search = await Songs.find({nombre: {$regex: new RegExp('^'+payload+'.*','i')}}).exec();
+    //Limitar la busqueda a 10 en caso de que existan mas canciones en la base de datos
+    search = search.slice(0, 10);
+    res.send({payload: search});
 });
 
 //Reproducir Cancion
-router.get('/play/:id', isAuthenticated, async (req, res) => {
+router.get('/play/:id', async (req, res) => {
     try {
         const songs = await Songs.findById(req.params.id);
-        const range = req.headers.range;
-        console.log(req.headers.range)
+        const range = req.get('range');
         if (!range) {
             res.status(400).json({ message: "No range specified" });
           }
@@ -78,6 +100,7 @@ router.get('/play/:id', isAuthenticated, async (req, res) => {
         }
     console.log('file does not exist');
     });      
+
     const audioPath = songs.ruta;
     const audioSize = fs.statSync(audioPath).size;
 
@@ -91,7 +114,7 @@ router.get('/play/:id', isAuthenticated, async (req, res) => {
       "Content-Range": `bytes ${start}-${end}/${audioSize}`,
       "Accept-Ranges": "bytes",
       "Content-Length": contentLength,
-      "Content-Type": req.file.mimetype,
+      "Content-Type": "audio/mp3",
     };
 
     res.writeHead(206, headers);
@@ -103,7 +126,7 @@ router.get('/play/:id', isAuthenticated, async (req, res) => {
     // Audio stream
     audioStream.pipe(res, (err) => {
         if (err) {
-            Console.log('Vergacion');
+            Console.log('Error');
         }
     });
 
@@ -114,37 +137,75 @@ router.get('/play/:id', isAuthenticated, async (req, res) => {
 
 });
 
+//Eliminar canciones del servidor
 router.delete('/eliminar/:id', isAuthenticated, async (req, res) => {
     const song = await Songs.findByIdAndDelete(req.params.id);
     unlink(path.resolve(song.ruta));
     req.flash('success_msg','Cancion Eliminada');
-    res.redirect('/play');
+    res.redirect('/manage-songs');
+});
+
+//Favoritos
+router.get('/favs', isAuthenticated, async (req, res) => {
+    const songs = await User.findOne({_id:ObjectId(req.session.objectId)}).populate('favorites').exec();
+    res.render('music/favs', {songs});
+});
+
+router.post('/favs/add/:id', isAuthenticated, async (req, res) => {
+    const songfav = req.params.id;
+    const user = await User.findById(req.user.id);
+    await User.update({"_id":user._id}, 
+                        { $push: {favorites: songfav} });
+    req.flash('success_msg','Cancion Añadida a Favoritos.');
+    res.redirect('/songs');
+});
+
+router.post('/favs/remove/:id', isAuthenticated, async (req, res) => {
+    const songfav = req.params.id;
+    const user = await User.findById(req.user.id);
+    await User.update({"_id":user._id}, 
+                        { $pull: {favorites: songfav} });
+    req.flash('success_msg','Cancion eliminada de Favoritos.');
+    res.redirect('/favs');
 });
 
 //Crear Playlists
-router.get('/playlists'), isAuthenticated, (req, res) => {
-    res.send('All playlists');
-};
+router.get('/playlists', isAuthenticated, async (req, res) => {
+    const playlists = await Lista.find({user: req.user.id}).sort({createdAt: 'desc'});
+    res.render('music/playlists', {playlists});
+});
 
-router.get('/playlists/create'), isAuthenticated, (req, res) => {
-    res.send('Create playlists');
-};
+router.get('/playlists/create', isAuthenticated, (req, res) => {
+    res.render('music/createlist');
+});
 
-router.get('/playlists/delete'), isAuthenticated, (req, res) => {
+router.post('/playlists/create', isAuthenticated, async (req, res) => {
+    const {name} = req.body;
+   const Playlist = new Lista({name});
+    const user = await User.findById(req.user.id);
+    await User.updateOne({"_id":user._id}, 
+                        { $push: {listas: Playlist} });
+   await Playlist.save();
+   req.flash('success_msg', 'Playlist Creada!.');
+    res.redirect('/playlists');
+});
+
+//Añadir a playlist
+
+router.get('/playlists/edit', async (req, res) => {
+    const playlist = await Lista.findById(req.params.id);
+    res.render('music/edit-list', {playlist})
+});
+router.get('/playlists/edit/:id', async (req, res) => {
+    const { name, email } = req.body;
+        await List.findByIdAndUpdate(req.params.id, {name})
+        req.flash('success_msg', 'Tu Playlist ha sido actualizada');
+        res.redirect('/playlists');
+});
+
+router.get('/playlists/delete', isAuthenticated, (req, res) => {
     res.send('Delete playlists');
-};
+});
 
-//Crear Albumes y recibir albums
-router.get('/albums'), isAuthenticated, (req, res) => {
-    res.send('All albums');
-}
-
-router.get('/albums/create'), isAuthenticated, (req, res) => {
-    res.send('Crear Album');
-}
-
-router.get('/albums/delete'), (req, res) => {
-    res.send('Delete Album');
-}
 
 module.exports = router;

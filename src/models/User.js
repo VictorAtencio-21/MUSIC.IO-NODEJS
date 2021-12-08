@@ -13,6 +13,14 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
+    role: {
+        type: String,
+        default: 'basic',
+        enum: ['basic', 'admin']
+    },
+    accessToken: {
+        type: String,
+    },
     password: {
         type: String,
         required: true
@@ -37,4 +45,4 @@ UserSchema.methods.matchPassword = async function(password) {
 };
 
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = model('User', UserSchema);

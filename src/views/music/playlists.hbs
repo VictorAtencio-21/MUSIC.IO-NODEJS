@@ -1,1 +1,24 @@
-<h1>Tus Playlists</h1>
+<a href="/dash"><i class="fas fa-arrow-circle-left fa-2x"></i></a><br>
+<h1>Playlists de {{#with user}}{{name}}{{/with}}</h1><br>
+<div class="row">
+    <div class="col-md mx-auto">
+        <div class="card">
+            <div class="card-header text-center">
+                Playlists
+            </div>
+            <div class="card-body">
+                {{#if Lista}}
+                <div>
+                    <div class="list-group">
+                    {{#each Lista}}
+                        <button type="button" class="list-group-item list-group-item-action active">{{nombre_lista}}</button>
+                    </div>
+                    {{/each}}
+                </div>
+                {{else}}
+                    <a href="/playlists/create" class="btn btn-success btn-block">Crea tu playlist</a>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>

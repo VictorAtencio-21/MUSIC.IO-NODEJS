@@ -1,16 +1,18 @@
 const mongoose = require('mongoose');
 
 const ListaSchema = new mongoose.Schema({
-    nombre_lista :{
+    name :{
         type : String,
         required : true
     },
-    owner :[{
-        type: mongoose.Schema.Types.ObjectId, ref:'Users'
-    }],
-    canciones :[{
-        type : mongoose.Schema.Types.ObjectId, ref:'Songs'
+    user: { 
+        type: String, ref: "User", required: true 
+    },
+    songs: [{ 
+        type: mongoose.Schema.Types.ObjectId, ref: "Songs" 
     }]
+},{
+    timestamps: true
 });
 
 const Lista = mongoose.model('Lista', ListaSchema);

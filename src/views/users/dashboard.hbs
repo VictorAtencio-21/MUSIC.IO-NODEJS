@@ -1,10 +1,26 @@
-<h1>Bienvenido! {{name}}</h1>
-
+<div class="row">
+  <div class="col-md-7 mx-auto">
+    {{#with user}}
+  <h1>Hola, {{name}}.</h1><br> 
+{{/with}}
 <div class="list-group">
-  <a href="/play" class="list-group-item list-group-item-action active" aria-current="true">
-    Canciones
+  <a href="/songs" class="list-group-item list-group-item-action" aria-current="true">
+    Todas las Canciones
+  </a>
+  <a href="/find" class="list-group-item list-group-item-action" aria-current="true">
+    Buscar
+  </a>
+  <a href="/favs" class="list-group-item list-group-item-action" aria-current="true">
+    Favoritos
   </a>
   <a href="/playlists" class="list-group-item list-group-item-action">Playlists</a>
-  <a href="/subir" class="list-group-item list-group-item-action">Subir canciones</a>
-  <a href="/albums" class="list-group-item list-group-item-action">Albums</a>
+  <a href="/profile" class="list-group-item list-group-item-action">Tu Perfil</a>
+</div><br>
+
+<div class="list-group">
+  <a href="/admin" class="list-group-item list-group-item-action" aria-current="true">
+    Opciones de Administrador.
+  </a>
+</div>
+  </div>
 </div>

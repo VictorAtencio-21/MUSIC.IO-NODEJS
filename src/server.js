@@ -9,6 +9,10 @@ const session = require('express-session');
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
 const path = require('path');
 const passport = require('passport');
+const { format } = require('timeago.js');
+require("dotenv").config({
+    path: path.join(__dirname, '../.env'),
+})
 
 // Inicializaciones
 const app = express();
@@ -28,6 +32,7 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs');
 
 // Middlewares
+app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false}));
@@ -50,6 +55,12 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    app.locals.format = format;
+    next();
+});
+
+
 // Rutas
 app.use(require('./routes/index.routes'));
 app.use(require('./routes/music.routes'));
@@ -60,5 +71,8 @@ app.use(require('./routes/users.routes'));
 // Archivos estaticos 
 app.use(express.static(path.join(__dirname, 'public'))); 
 
+app.use(function(req, res, next) {
+    res.status(404).render('404');
+  });
 
 module.exports = app;

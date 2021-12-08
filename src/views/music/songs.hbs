@@ -1,0 +1,41 @@
+ <a href="/dash"><i class="fas fa-arrow-circle-left fa-2x"></i></a><br><br>
+ <h1>Canciones</h1><br>
+ <div class="container-fluid">
+     <div class="row">
+            <div class="col-lg">
+                {{#if songs}}
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Artista</th>
+                            <th scope="col">Genero</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each songs}}
+                            <tr>
+                            <td>{{nombre}}</td>
+                            <td>{{artista}}</td>
+                            <td>{{genero}}</td>
+                            <td><a href="/play/{{_id}}"><i class="fas fa-play-circle fa-2x"></i></a></td>
+                            <td><form action="/favs/add/{{_id}}?_method=POST" method="POST">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                <i class="fas fa-heart fa-2x"></i>
+                                </button>
+                                </form>
+                            </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                        </table>
+                    {{else}}
+                    <h3>No tienes ninguna canción :( , Sube alguna!</h3>
+                {{/if}}
+            </div>
+     </div>
+ </div>
+<br>
+<div>
+    
+</div>

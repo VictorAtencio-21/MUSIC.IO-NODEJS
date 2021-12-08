@@ -1,0 +1,40 @@
+ <a href="/admin"><i class="fas fa-arrow-circle-left fa-2x"></i></a><br><br>
+ <h1>Administrar Canciones</h1><br>
+ <div class="container-fluid">
+     <div class="row">
+            <div class="col-lg">
+                {{#if songs}}
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Artista</th>
+                            <th scope="col">Genero</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each songs}}
+                            <tr>
+                            <td>{{nombre}}</td>
+                            <td>{{artista}}</td>
+                            <td>{{genero}}</td>
+                            <td><form action="/eliminar/{{_id}}?_method=DELETE" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger btn-block btn-sm">
+                                Eliminar
+                                </button>
+                            </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                        </table>
+                    {{else}}
+                    <h3>No tienes ninguna canción :( , Sube alguna!</h3>
+                {{/if}}
+            </div>
+     </div>
+ </div>
+<br>
+<div>
+    
+</div>
