@@ -14,13 +14,11 @@ Constara de un registro de usuarios los cuales se dividiran en dos roles:
 EL USUARIO ADMINISTRADOR PODRA:
 * SUBIR CANCIONES Y ELIMINARLAS
 * REPRODUCIR CANCIONES
-* CREAR ALBUMES, EDITARLOS Y ELIMINARLOS
 
 EL USUARIO COMÚN PODRA:
 * EDITAR SU PERFIL
 * BUSCAR CANCIONES POR NOMBRE, GENERO O ARTISTA Y REPRODUCIRLAS
 * CREAR PLAYLISTS, EDITARLAS Y ELIMINARLAS
 * TENER CANCIONES FAVORITAS
-* SEGUIR PLAYLISTS DE OTROS USUARIO
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ENLACE A DEPLOY EN HEROKU:
