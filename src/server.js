@@ -10,6 +10,7 @@ const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-ac
 const path = require('path');
 const passport = require('passport');
 const { format } = require('timeago.js');
+require('./database');
 require("dotenv").config({
     path: path.join(__dirname, '../.env'),
 })
@@ -19,7 +20,6 @@ const app = express();
 require('./config/passport')
 
 // Ajustes
-app.set('port', process.env.PORT || 4000);
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', exphbs({
     defaultLayout: 'main',
@@ -74,5 +74,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
     res.status(404).render('404');
   });
+
+const host = process.env.HOST || '0.0.0.0';
+const port = process.env.PORT || '8000';
+
+app.listen(port, host, () => {
+    console.log('App funcionando');
+});
 
 module.exports = app;

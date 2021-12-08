@@ -2,10 +2,10 @@
   "name": "proyecto-node",
   "version": "1.0.0",
   "description": "Proyecto Node WEBII",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "author": "",
   "license": "ISC",
