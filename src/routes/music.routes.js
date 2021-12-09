@@ -197,8 +197,9 @@ router.get('/playlists/edit', async (req, res) => {
     res.render('music/edit-list', {playlist})
 });
 router.get('/playlists/edit/:id', async (req, res) => {
-    const { name, email } = req.body;
-        await List.findByIdAndUpdate(req.params.id, {name})
+    const { name } = req.body;
+        const lista = await Lista.findById(req.params.id)
+        await List.findByIdAndUpdate(lista, {name})
         req.flash('success_msg', 'Tu Playlist ha sido actualizada');
         res.redirect('/playlists');
 });
