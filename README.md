@@ -24,3 +24,5 @@ EL USUARIO COMÚN PODRA:
 ENLACE A DEPLOY EN HEROKU: https://musicioweb.herokuapp.com/
 
 DOCUMENTACION EN POSTMAN: https://documenter.getpostman.com/view/16152144/UVJkBtS2
+
+MODELADO DE DATOS: https://drive.google.com/file/d/1ccCoMs2s3sem-L3PhiVlmZbtSTiTdexH/view?usp=sharing
