@@ -21,4 +21,6 @@ EL USUARIO COMÚN PODRA:
 * CREAR PLAYLISTS, EDITARLAS Y ELIMINARLAS
 * TENER CANCIONES FAVORITAS
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ENLACE A DEPLOY EN HEROKU:
+ENLACE A DEPLOY EN HEROKU: https://musicioweb.herokuapp.com/
+
+DOCUMENTACION EN POSTMAN: https://documenter.getpostman.com/view/16152144/UVJkBtS2
