@@ -46,10 +46,6 @@ usersController.SignUp = async (req, res) => {
            const newUser =  new Users({name, email, password, role: role || 'admin'});
             newUser.password = await newUser.encryptPassword(password);
             req.flash('success_msg', 'Registrado Exitosamente!, Inicia Sesión para empezar.');
-            const accessToken = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
-                expiresIn: "1d"
-              });
-              newUser.accessToken = accessToken;
            await newUser.save();
             res.redirect('/');
         }
